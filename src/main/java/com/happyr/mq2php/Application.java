@@ -64,8 +64,28 @@ public class Application {
             param = "rabbitmq";
         }
 
+
+        String host = System.getProperty("messageQueueHost");
+        if (host == null) {
+            //default
+            host = "localhost";
+        }
+
+        String portString = System.getProperty("messageQueuePort");
+        Integer port;
+        try {
+            port = Integer.parseInt(portString);
+        }
+        catch (NumberFormatException e) {
+            port = null;
+        }
+
         if (param.equalsIgnoreCase("rabbitmq")) {
-            return new RabbitMq(queueName);
+            if (port == null) {
+                //default for rabbitmq
+                port = 5672;
+            }
+            return new RabbitMq(host, port, queueName);
         }
 
         throw new IllegalArgumentException("Could not find QueueInterface implementation named " + param);
