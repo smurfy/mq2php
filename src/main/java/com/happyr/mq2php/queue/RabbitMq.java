@@ -22,13 +22,15 @@ public class RabbitMq implements QueueInterface {
     protected String queueName;
     protected String errorQueueName;
 
-    public RabbitMq(String host, Integer port, String queueName) {
+    public RabbitMq(String host, Integer port, String userName, String password, String vhost, String queueName) {
         this.queueName = queueName;
         errorQueueName = queueName + "_errors";
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
         factory.setHost(host);
         factory.setPort(port);
+        factory.setUsername(userName);
+        factory.setPassword(password);
+        factory.setVirtualHost(vhost);
         try {
             connection = factory.newConnection();
             channel = connection.createChannel();

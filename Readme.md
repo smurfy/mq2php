@@ -41,7 +41,19 @@ Possible values are:
 
  * rabbitmq
 
-When you are using rabbitmq we will connect to localhost with the official rabbit mq client library.
+When you are using rabbitmq we will connect to localhost with the official rabbit mq client library. You can change
+settings to RabbitMQ using command line system properties (example `-DmessageQueueHost=rabbitmq`) and/or env vars (example
+`export SF_RABBITMQ_HOST=rabbitmq`). Here is a complete list:
+
+| property              | env                     | default              |
+| ----------------------|-------------------------|----------------------|
+| messageQueue          | `nil`                   | rabbitmq             |
+| messageQueueHost      | SF_RABBITMQ_HOST        | `localhost`          |
+| messageQueuePort      | SF_RABBITMQ_PORT        | `5672`               |
+| messageQueueUser      | SF_RABBITMQ_USER        | `guest`              |
+| messageQueuePassword  | SF_RABBITMQ_PASSWORD    | `guest`              |
+| messageQueueVhost     | SF_RABBITMQ_VHOST       | `/`                  |
+| queueNames            | SF_RABBITMQ_QUEUE_NAMES | `sf_deferred_events` |
 
 ### queueNames
 
@@ -49,6 +61,13 @@ You can subscribe to different queues with different names. You should separate 
 
 ```bash
 java -DmessageQueue=rabbitmq -DqueueNames=foo,bar,baz -jar mq2php.jar
+```
+
+or env
+
+```bash
+export SF_RABBITMQ_QUEUE_NAMES=foo,bar,baz
+java -DmessageQueue=rabbitmq -jar mq2php.jar
 ```
 
 These topics will be evenly distributed over the worker threads.
